@@ -9,15 +9,15 @@ steps:
 - name: 'ubuntu'
   args: ['ls', '-R', 'backend/target']
 
-# 2. Construir la imagen Docker (contexto = backend)
+# 2. Construir la imagen Docker (CORREGIDO)
 - name: 'gcr.io/cloud-builders/docker'
-  dir: 'backend'
   args:
     [
       'build',
       '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
       '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:latest',
-      '.'
+      '-f', 'backend/Dockerfile',
+      'backend'
     ]
 
 # 3. Push de la imagen
