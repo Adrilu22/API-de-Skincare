@@ -12,10 +12,8 @@ steps:
         'build',
         '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
         '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:latest',
-        '.',
-        '-f', 'backend/Dockerfile'
-      ]
-
+        'backend' # <--- AQUÍ: Docker se sitúa dentro de la carpeta backend
+        ]
   # 3. Push de la imagen
   - name: 'gcr.io/cloud-builders/docker'
     args:
