@@ -1,9 +1,14 @@
+# 🔥 Etapa 1: construir el JAR
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# 🔥 Etapa 2: ejecutar la app
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
-# Copiamos el jar generado por Maven
-COPY target/*.jar app.jar
-# Exponemos el puerto 8080 (estándar de Cloud Run)
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
-# Comando de arranque pasando el puerto como propiedad de sistema
 ENTRYPOINT ["java", "-Dserver.port=${PORT}", "-jar", "app.jar"]
  
