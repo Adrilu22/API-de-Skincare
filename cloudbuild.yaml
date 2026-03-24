@@ -1,0 +1,50 @@
+steps:
+  # 1. Compilar el proyecto (genera el .jar)
+  - name: 'maven:3.9.6-eclipse-temurin-21'
+    entrypoint: mvn
+    args: ['clean', 'package', '-DskipTests']
+    dir: 'backend'
+
+  # 2. Construir la imagen Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
+        '-t',
+        'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:latest',
+        'backend'
+      ]
+
+  # 3. Push de la imagen
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        '--all-tags',
+        'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api'
+      ]
+
+  # 4. Deploy a Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'services',
+        'update',
+        'skincare-api',
+        '--image=us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
+        '--region=us-central1',
+        '--add-cloudsql-instances=skincare-cloud:us-central1:skincare-db',
+        '--set-env-vars=DB_NAME=skincare,DB_USER=postgres,DB_PASSWORD=123456789,INSTANCE_CONNECTION_NAME=skincare-cloud:us-central1:skincare-db',
+        '--quiet'
+      ]
+
+# 🔧 Necesario para logs
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+images:
+  - 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api'
