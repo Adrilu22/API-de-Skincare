@@ -1,10 +1,10 @@
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
-# Usamos el nombre exacto del archivo que vimos en tu carpeta target
+# Al estar ya dentro de backend, target/ está aquí mismo
 COPY target/api-skincare-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
-# Configuramos el puerto dinámico para que Cloud Run no falle al iniciar
+# Usamos el puerto dinámico de Cloud Run
 ENTRYPOINT ["java", "-Dserver.port=${PORT:8080}", "-jar", "app.jar"]
