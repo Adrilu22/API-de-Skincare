@@ -1,8 +1,9 @@
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
-
-# Le decimos: "Entra a backend, luego a target y agarra el jar"
-COPY backend/target/api-skincare-0.0.1-SNAPSHOT.jar app.jar
-
+# Copiamos el jar generado por Maven
+COPY target/*.jar app.jar
+# Exponemos el puerto 8080 (estándar de Cloud Run)
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando de arranque pasando el puerto como propiedad de sistema
+ENTRYPOINT ["java", "-Dserver.port=${PORT}", "-jar", "app.jar"]
+ 
