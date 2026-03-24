@@ -5,14 +5,15 @@ steps:
     args: ['clean', 'package', '-DskipTests']
     dir: 'backend' 
 
-  # 2. Construir Imagen (desde la RAIZ del proyecto)
+ # 2. Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build', 
-      '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
-      '.', 
-      '-f', 'backend/Dockerfile'
-    ]
+    args:
+      [
+        'build',
+        '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
+        '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:latest',
+        'backend'  # <--- ESTO ES LA CLAVE: Docker ahora trabaja DENTRO de backend
+      ]
 
   # 3. Push de la imagen
   - name: 'gcr.io/cloud-builders/docker'
