@@ -3,16 +3,16 @@ steps:
   - name: 'maven:3.9.6-eclipse-temurin-21'
     entrypoint: mvn
     args: ['clean', 'package', '-DskipTests']
-    dir: 'backend' 
+    dir: 'backend'
 
 # 2. Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'build',
-        '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
-        '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:latest',
-        '.',           # <--- El punto es OBLIGATORIO aquí
+        '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
+        '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:latest',
+        '.',
         '-f', 'backend/Dockerfile'
       ]
 
@@ -22,10 +22,10 @@ steps:
       [
         'push',
         '--all-tags',
-        'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api'
+        'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api'
       ]
 
-  # 4. Deploy a Cloud Run (CAMBIADO DB_NAME)
+  # 4. Deploy a Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -34,11 +34,10 @@ steps:
         'services',
         'update',
         'skincare-api',
-        '--image=us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
+        '--image=us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
         '--region=us-central1',
-        '--add-cloudsql-instances=skincare-cloud:us-central1:skincare-db',
-        # Cambié DB_NAME=skincare por skincare_db para que coincida con tu pgAdmin
-        '--set-env-vars=DB_NAME=skincare_db,DB_USER=postgres,DB_PASSWORD=Aa1002416662,INSTANCE_CONNECTION_NAME=skincare-cloud:us-central1:skincare-db',
+        '--add-cloudsql-instances=api-de-skincare:us-central1:skincare',
+        '--set-env-vars=DB_NAME=skincare_db,DB_USER=postgres,DB_PASSWORD=Aa1002416662,INSTANCE_CONNECTION_NAME=api-de-skincare:us-central1:skincare',
         '--quiet'
       ]
 
@@ -46,4 +45,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 images:
-  - 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api'
+  - 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api'
