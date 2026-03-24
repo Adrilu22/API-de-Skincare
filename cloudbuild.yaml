@@ -1,10 +1,10 @@
 steps:
-  # 1. Compilar el proyecto
+ # 1. Compilar el proyecto
   - name: 'maven:3.9.6-eclipse-temurin-21'
     entrypoint: mvn
     args: ['clean', 'package', '-DskipTests']
-    dir: 'backend'
-
+    dir: 'backend'  # <--- ESTO ES VITAL
+    
   # 2. Construir la imagen Docker (CAMBIADO AQUÍ)
   - name: 'gcr.io/cloud-builders/docker'
     args:
