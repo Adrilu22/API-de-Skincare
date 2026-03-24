@@ -6,8 +6,6 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-
 EXPOSE 8080
 
-# Esto permite que las variables ${PORT} e ${INSTANCE_CONNECTION_NAME} funcionen
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
