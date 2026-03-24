@@ -1,5 +1,5 @@
 steps:
-# 1. Build imagen desde la carpeta backend
+# 1. Build de la imagen
 - name: 'gcr.io/cloud-builders/docker'
   args:
     [
@@ -9,7 +9,7 @@ steps:
       './backend'
     ]
 
-# 2. Push imagen
+# 2. Push a Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
   args:
     [
@@ -17,7 +17,7 @@ steps:
       'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:latest'
     ]
 
-# 3. 🚀 Deploy a Cloud Run
+# 3. Despliegue a Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
   args:

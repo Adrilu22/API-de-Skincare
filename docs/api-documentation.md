@@ -1,169 +1,148 @@
-# 🌿 API Skincare - Gestión de Productos
+# 📘 Documentación de API - Skincare
 
 ---
 
-## 🧩 Descripción del Proyecto y Dominio
+##  1. Descripción de la API
 
-Este proyecto consiste en el desarrollo de una API REST orientada a la gestión de productos del dominio de cuidado de la piel (skincare). La aplicación permite administrar información relacionada con categorías y productos, facilitando operaciones CRUD (crear, consultar, actualizar y eliminar registros).
+La API Skincare es un servicio REST desarrollado en Java con Spring Boot que permite gestionar productos relacionados con el cuidado de la piel.
 
-El dominio seleccionado corresponde al sector de **cosmética y cuidado personal**, ampliamente utilizado en plataformas digitales como e-commerce, aplicaciones móviles y sistemas de gestión de inventario.
+El sistema implementa un modelo basado en dos entidades principales:
 
-La solución fue diseñada bajo una arquitectura en capas, separando claramente la lógica de negocio, el acceso a datos y la exposición de servicios, lo que facilita el mantenimiento, la escalabilidad y la reutilización del código.
+- Categorías
+- Productos
 
----
+Estas entidades están relacionadas, ya que cada producto pertenece a una categoría.
 
-## 👥 Integrantes del Grupo y División de Responsabilidades
-
-* **Backend Developer**
-
-  * Diseño e implementación de la API REST
-  * Modelado de entidades (Producto, Categoría)
-  * Implementación de controladores y servicios
-  * Integración con base de datos PostgreSQL
-
-* **Frontend Developer (opcional)**
-
-  * Consumo de la API
-  * Desarrollo de interfaz de usuario
-
-* **DevOps / Infraestructura**
-
-  * Configuración de Docker
-  * Automatización de builds
-  * Gestión de entornos
-
-*(Ajustar nombres según el equipo o dejar como individual)*
+La API permite realizar operaciones CRUD completas, cumpliendo con los requisitos establecidos en la actividad académica {index=1}.
 
 ---
 
-## 🛠️ Stack Tecnológico
+##  2. Objetivo de la API
 
-### 🔹 Backend
+El objetivo de la API es permitir que aplicaciones externas puedan:
 
-* Java 21
-* Spring Boot
-* Spring Data JPA
-* Hibernate
-
-### 🔹 Base de Datos
-
-* PostgreSQL
-
-### 🔹 DevOps
-
-* Docker
-
-### 🔹 Otros
-
-* Maven
-* Git & GitHub
+- Crear categorías de productos
+- Registrar productos
+- Consultar información
+- Actualizar datos
+- Eliminar registros
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+##  3. Base URL
 
-El sistema está basado en una arquitectura en capas:
 
-* **Controller**
-
-  * Maneja las solicitudes HTTP
-  * Expone los endpoints de la API
-
-* **Service**
-
-  * Contiene la lógica de negocio
-  * Procesa las operaciones del sistema
-
-* **Repository**
-
-  * Accede a la base de datos
-  * Utiliza Spring Data JPA
-
-* **Model**
-
-  * Representa las entidades del sistema
 
 ---
 
-## 📂 Estructura del Proyecto
+# 4. Lista completa de endpoints
 
-```bash
-API-de-Skincare/
- ├── backend/
- ├── frontend/
- ├── database/
- ├── docs/
- │    ├── api-documentation.md
- │    └── deployment.md
- ├── cloudbuild.yaml
- └── README.md
-```
+##  Categorías
+
+| Método | Endpoint | Descripción |
+|--------|--------|------------|
+| GET | /api/categorias | Obtener todas las categorías |
+| GET | /api/categorias/{id} | Obtener una categoría |
+| POST | /api/categorias | Crear categoría |
+| PUT | /api/categorias/{id} | Actualizar categoría |
+| DELETE | /api/categorias/{id} | Eliminar categoría |
 
 ---
 
-## ⚙️ Instalación Local
+##  Productos
 
-### 1. Clonar repositorio
-
-```bash
-git clone https://github.com/Adrilu22/API-de-Skincare.git
-cd API-de-Skincare/backend
-```
-
----
-
-### 2. Configurar base de datos
-
-Crear base de datos en PostgreSQL:
-
-```sql
-CREATE DATABASE skincare_db;
-```
+| Método | Endpoint | Descripción |
+|--------|--------|------------|
+| GET | /api/productos | Obtener todos los productos |
+| GET | /api/productos/{id} | Obtener producto |
+| POST | /api/productos | Crear producto |
+| PUT | /api/productos/{id} | Actualizar producto |
+| DELETE | /api/productos/{id} | Eliminar producto |
 
 ---
 
-### 3. Configurar application.properties
+#  5. Parámetros de cada endpoint
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/skincare_db
-spring.datasource.username=postgres
-spring.datasource.password=TU_PASSWORD
-```
+##  GET /api/categorias/{id}
 
----
-
-### 4. Ejecutar el proyecto
-
-```bash
-./mvnw spring-boot:run
-```
+| Parámetro | Tipo | Descripción |
+|----------|------|------------|
+| id | Long | ID de la categoría |
 
 ---
 
-### 5. Probar la API
+## 🔹 POST /api/categorias
 
-```bash
-http://localhost:8080/api/categorias
-```
+### Body
 
----
+```json
+{
+  "nombre": "Hidratantes"
+}
 
-## 📄 Documentación de la API
+##  POST /api/productos
 
-La documentación completa de endpoints, parámetros, ejemplos y errores se encuentra en:
+### Body
 
-```bash
-docs/api-documentation.md
-```
+{
+  "nombre": "Serum Vitamina C",
+  "precio": 70000,
+  "categoria": {
+    "id": 1
+  }
+}
 
----
+ ## 6. Ejemplos de Request y Response
 
-## 🚀 Estado del Proyecto
+### Obtener categorías
+[
+  {
+    "id": 1,
+    "nombre": "Hidratantes"
+  },
+  {
+    "id": 2,
+    "nombre": "Limpiadores"
+  }
+]
+##  Request
+###Crear producto
+{
+  "nombre": "Crema hidratante",
+  "precio": 50000,
+  "categoria": {
+    "id": 1
+  }
+}
 
-El sistema se encuentra funcional en entorno local, permitiendo la gestión de productos y categorías mediante endpoints REST.
+## Response
+{
+  "id": 2,
+  "nombre": "Crema hidratante",
+  "precio": 50000,
+  "categoria": {
+    "id": 1,
+    "nombre": "Hidratantes"
+  }
+}
 
----
+## 7. Códigos de estado HTTP
 
-## 👨‍💻 Autor
+| Código | Significado           |
+| ------ | --------------------- |
+| 200    | OK                    |
+| 201    | Created               |
+| 400    | Bad Request           |
+| 404    | Not Found             |
+| 500    | Internal Server Error |
 
-Proyecto académico - Ingeniería de Sistemas
+## 8. Formato de errores
+{
+  "timestamp": "2026-03-24T16:20:26",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "Error en la base de datos",
+  "path": "/api/productos"
+}
+
+## 9. Consideraciones

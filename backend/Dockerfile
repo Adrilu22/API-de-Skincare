@@ -7,8 +7,7 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponemos el puerto pero permitimos que sea dinámico
 EXPOSE 8080
 
-# El uso de sh -c permite que las variables de entorno se expandan correctamente
+# Esto permite que las variables ${PORT} e ${INSTANCE_CONNECTION_NAME} funcionen
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
