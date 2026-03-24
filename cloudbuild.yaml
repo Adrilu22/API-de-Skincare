@@ -4,16 +4,16 @@ steps:
     entrypoint: mvn
     args: ['clean', 'package', '-DskipTests']
     dir: 'backend'  # <--- ESTO ES VITAL
-    
-  # 2. Construir la imagen Docker (CAMBIADO AQUÍ)
+
+  # 2. Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'build',
         '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
         '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:latest',
-        '.',  # <--- IMPORTANTE: Punto para que Docker vea todo el proyecto
-        '-f', 'backend/Dockerfile' # <--- Le decimos donde está el manual
+        '.',           # <--- El punto le dice: "Busca desde la raíz"
+        '-f', 'backend/Dockerfile' # <--- "El manual está aquí"
       ]
 
   # 3. Push de la imagen

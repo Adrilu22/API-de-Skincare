@@ -2,8 +2,8 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-# Usamos **/target para que Docker busque en todas las subcarpetas hasta hallar el jar
-COPY **/target/*.jar app.jar
+# Cambiamos la ruta para que Docker la encuentre desde la raíz
+COPY backend/target/*.jar app.jar
 
 EXPOSE 8080
 
