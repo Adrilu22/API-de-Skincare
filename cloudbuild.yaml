@@ -38,7 +38,7 @@ steps:
         '--image=us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
         '--region=us-central1',
         '--add-cloudsql-instances=skincare-cloud:us-central1:skincare-db',
-        '--set-env-vars=DB_NAME=skincare,DB_USER=postgres,DB_PASSWORD=123456789,INSTANCE_CONNECTION_NAME=skincare-cloud:us-central1:skincare-db',
+        '--set-env-vars=DB_NAME=skincare,DB_USER=postgres,DB_PASSWORD=Aa1002416662,INSTANCE_CONNECTION_NAME=skincare-cloud:us-central1:skincare-db',
         '--quiet'
       ]
 
