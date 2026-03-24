@@ -1,9 +1,13 @@
 steps:
-# 1. Compilar (dentro de la carpeta backend)
+# 0. Compilar (dentro de la carpeta backend)
   - name: 'maven:3.9.6-eclipse-temurin-21'
     entrypoint: mvn
     args: ['clean', 'package', '-DskipTests']
     dir: 'backend'
+
+# 1. DIAGNÓSTICO: Ver si el archivo JAR realmente existe
+  - name: 'ubuntu'
+    args: ['ls', '-R', 'backend/target']
 
 # 2. Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
@@ -12,10 +16,10 @@ steps:
         'build',
         '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
         '-t', 'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api:latest',
-        '.' # Contexto local de la carpeta backend
+        '.' 
       ]
-    dir: 'backend' # <--- ESTO ES VITAL: Entra a backend antes de hacer el build
-
+    # No usamos dir: 'backend' aquí para que Docker vea la ruta completa desde la raíz
+    
   # 3. Push de la imagen
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -25,7 +29,7 @@ steps:
         'us-central1-docker.pkg.dev/api-de-skincare/cloud-run-source-deploy/skincare-api'
       ]
 
-  # 4. Deploy a Cloud Run (Con tu instancia de base de datos)
+  # 4. Deploy a Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
