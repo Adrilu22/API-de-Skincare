@@ -1,20 +1,18 @@
 steps:
- # 1. Compilar el proyecto
+# 1. Compilar (dentro de la carpeta backend)
   - name: 'maven:3.9.6-eclipse-temurin-21'
     entrypoint: mvn
     args: ['clean', 'package', '-DskipTests']
-    dir: 'backend'  # <--- ESTO ES VITAL
+    dir: 'backend' 
 
-  # 2. Construir la imagen Docker
+  # 2. Construir Imagen (desde la RAIZ del proyecto)
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'build',
-        '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
-        '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:latest',
-        '.',           # <--- El punto le dice: "Busca desde la raíz"
-        '-f', 'backend/Dockerfile' # <--- "El manual está aquí"
-      ]
+    args: [
+      'build', 
+      '-t', 'us-central1-docker.pkg.dev/skincare-cloud/cloud-run-source-deploy/skincare-api:$COMMIT_SHA',
+      '.', 
+      '-f', 'backend/Dockerfile'
+    ]
 
   # 3. Push de la imagen
   - name: 'gcr.io/cloud-builders/docker'
