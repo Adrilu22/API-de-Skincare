@@ -1,148 +1,149 @@
-# 📘 Documentación de API - Skincare
+📖 Documentación de la API de Skincare
+🚀 Base URL
+https://api-skincare-v2-994118614969.us-central1.run.app/api/categorias
+https://api-skincare-v2-994118614969.us-central1.run.app/api/productos
 
----
+📑 Lista de Endpoints
+1. Obtener todos los productos
+Método: GET
 
-##  1. Descripción de la API
+URL: /api/productos
 
-La API Skincare es un servicio REST desarrollado en Java con Spring Boot que permite gestionar productos relacionados con el cuidado de la piel.
+Response (200 OK):
 
-El sistema implementa un modelo basado en dos entidades principales:
-
-- Categorías
-- Productos
-
-Estas entidades están relacionadas, ya que cada producto pertenece a una categoría.
-
-La API permite realizar operaciones CRUD completas, cumpliendo con los requisitos establecidos en la actividad académica {index=1}.
-
----
-
-##  2. Objetivo de la API
-
-El objetivo de la API es permitir que aplicaciones externas puedan:
-
-- Crear categorías de productos
-- Registrar productos
-- Consultar información
-- Actualizar datos
-- Eliminar registros
-
----
-
-##  3. Base URL
-
-
-
----
-
-# 4. Lista completa de endpoints
-
-##  Categorías
-
-| Método | Endpoint | Descripción |
-|--------|--------|------------|
-| GET | /api/categorias | Obtener todas las categorías |
-| GET | /api/categorias/{id} | Obtener una categoría |
-| POST | /api/categorias | Crear categoría |
-| PUT | /api/categorias/{id} | Actualizar categoría |
-| DELETE | /api/categorias/{id} | Eliminar categoría |
-
----
-
-##  Productos
-
-| Método | Endpoint | Descripción |
-|--------|--------|------------|
-| GET | /api/productos | Obtener todos los productos |
-| GET | /api/productos/{id} | Obtener producto |
-| POST | /api/productos | Crear producto |
-| PUT | /api/productos/{id} | Actualizar producto |
-| DELETE | /api/productos/{id} | Eliminar producto |
-
----
-
-#  5. Parámetros de cada endpoint
-
-##  GET /api/categorias/{id}
-
-| Parámetro | Tipo | Descripción |
-|----------|------|------------|
-| id | Long | ID de la categoría |
-
----
-
-## 🔹 POST /api/categorias
-
-### Body
-
-```json
-{
-  "nombre": "Hidratantes"
-}
-
-##  POST /api/productos
-
-### Body
-
-{
-  "nombre": "Serum Vitamina C",
-  "precio": 70000,
-  "categoria": {
-    "id": 1
-  }
-}
-
- ## 6. Ejemplos de Request y Response
-
-### Obtener categorías
+JSON
 [
   {
-    "id": 1,
-    "nombre": "Hidratantes"
+    "id": 2,
+    "nombre": "Gel limpiador",
+    "precio": 25000,
+    "categoriaId": 1
   },
   {
-    "id": 2,
-    "nombre": "Limpiadores"
+    "id": 3,
+    "nombre": "Crema hidratante",
+    "precio": 30000,
+    "categoriaId": 2
   }
 ]
-##  Request
-###Crear producto
+2. Crear un nuevo producto
+Método: POST
+
+URL: /api/productos
+
+Request Body:
+
+JSON
 {
-  "nombre": "Crema hidratante",
-  "precio": 50000,
+  "nombre": "Mascarilla facial",
+  "precio": 40000,
   "categoria": {
-    "id": 1
+    "id": 2
+  }
+}
+Response (201 Created): Retorna el objeto creado con su ID.
+
+3. Actualizar producto
+Método: PUT
+
+URL: /api/productos/{id}
+
+JSON
+{
+  "nombre": "Serum vitamina C",
+  "precio": 65000,
+  "categoria": {
+    "id": 2
   }
 }
 
-## Response
+Response (200 OK): Producto actualizado correctamente.
+
+4. Eliminar producto
+Método: DELETE
+
+URL: /api/productos/{id}
+
+Response (204 No Content): Éxito sin contenido.
+
+🧾 1. Obtener todos los categorias
+Método: GET
+URL: /api/categorias
+
+JSON
+[
+  { "id": 1, "nombre": "Limpieza" },
+  { "id": 2, "nombre": "Hidratacion" },
+  { "id": 3, "nombre": "Proteccion" },
+  { "id": 4, "nombre": "Tratamiento" },
+  { "id": 5, "nombre": "Tonificacion" }
+]
+Response:200 OK: Petición exitosa.
+
+2. Crear una nueva categoría
+
+Método: POST
+URL: /api/categorias
+
+Request
+JSON
+{
+  "nombre": "Exfoliacion"
+}
+Response
+JSON
+{
+  "id": 6,
+  "nombre": "Exfoliacion"
+}
+
+201 Created: Recurso creado con éxito.
+
+3. Actualizar categoría
+Método: PUT
+URL:/api/categorias/{id}
+
+
+Request
+JSON
+{
+  "nombre": "Cuidado facial"
+}
+Response
+JSON
 {
   "id": 2,
-  "nombre": "Crema hidratante",
-  "precio": 50000,
-  "categoria": {
-    "id": 1,
-    "nombre": "Hidratantes"
-  }
+  "nombre": "Cuidado facial"
 }
+200 OK: Petición exitosa.
 
-## 7. Códigos de estado HTTP
+4. Eliminar categoría
+Método: DELETE
+URL:/api/categorias/{id}
 
-| Código | Significado           |
-| ------ | --------------------- |
-| 200    | OK                    |
-| 201    | Created               |
-| 400    | Bad Request           |
-| 404    | Not Found             |
-| 500    | Internal Server Error |
+204 No Content : No retorna contenido
 
-## 8. Formato de errores
+📋 Códigos de Estado HTTP
+200 OK: Petición exitosa.
+
+201 Created: Recurso creado con éxito.
+
+204 No Content : No retorna contenido
+
+400 Bad Request: Datos de entrada inválidos.
+
+404 Not Found: El producto no existe.
+
+500 Internal Server Error: Error en el servidor cloud o base de datos.
+
+⚠️ Formato de Errores
+En caso de error, la API responderá con el siguiente formato:
+
+JSON
 {
-  "timestamp": "2026-03-24T16:20:26",
-  "status": 500,
-  "error": "Internal Server Error",
-  "message": "Error en la base de datos",
-  "path": "/api/productos"
+  "timestamp": "2026-03-24T21:58:00",
+  "status": 404,
+  "error": "Not Found",
+  "message": "Mensaje detallado del error",
+  "path": "/api/productos/id"
 }
-
-## 9. Consideraciones
