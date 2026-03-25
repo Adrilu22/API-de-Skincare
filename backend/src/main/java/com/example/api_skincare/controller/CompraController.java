@@ -2,7 +2,6 @@ package com.example.api_skincare.controller;
 
 import com.example.api_skincare.model.Compra;
 import com.example.api_skincare.model.DetalleCompra;
-import com.example.api_skincare.model.Producto;
 import com.example.api_skincare.repository.CompraRepository;
 import com.example.api_skincare.repository.DetalleCompraRepository;
 
@@ -23,20 +22,27 @@ public class CompraController {
         this.detalleRepo = detalleRepo;
     }
 
+    // 🔥 GUARDAR COMPRA
     @PostMapping
-    public String guardarCompra(@RequestBody List<Producto> productos) {
+    public String guardarCompra(@RequestBody List<DetalleCompra> detalles) {
 
         // 1. Crear compra
         Compra compra = compraRepo.save(new Compra());
 
-        // 2. Guardar cada producto en detalle_compra
-        for (Producto p : productos) {
+        // 2. Guardar detalles
+        for (DetalleCompra d : detalles) {
+
             DetalleCompra detalle = new DetalleCompra();
+
+            // ✅ SOLO lo que existe en tu modelo
+            detalle.setProductoId(d.getProductoId());
+
+            // 🔥 asignar compra
             detalle.setCompraId(compra.getId());
-            detalle.setProductoId(p.getId());
+
             detalleRepo.save(detalle);
         }
 
-        return "Compra guardada correctamente";
+        return "Compra guardada correctamente ✅";
     }
 }

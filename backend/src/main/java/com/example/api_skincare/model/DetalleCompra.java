@@ -15,6 +15,7 @@ public class DetalleCompra {
 
     public DetalleCompra() {}
 
+    // GETTERS
     public Long getId() {
         return id;
     }
@@ -27,6 +28,7 @@ public class DetalleCompra {
         return compraId;
     }
 
+    // SETTERS
     public void setId(Long id) {
         this.id = id;
     }
