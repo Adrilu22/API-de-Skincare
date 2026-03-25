@@ -1,6 +1,6 @@
 let carrito = [];
 
-// 🔥 ENDPOINTS (AJUSTA EL PUERTO SI ES NECESARIO)
+// 🔥 ENDPOINTS
 const API_PRODUCTOS = "https://api-skincare-v2-994118614969.us-central1.run.app/api/productos";
 const API_CATEGORIAS = "https://api-skincare-v2-994118614969.us-central1.run.app/api/categorias";
 
@@ -48,11 +48,8 @@ async function generarRutina() {
     if (tipo === "mixta" && (nombre.includes("gel") || nombre.includes("crema"))) rutina.push(p);
 
     if (problema === "manchas" && (nombre.includes("vitamina") || categoria === "tratamiento")) rutina.push(p);
-
     if (problema === "hidratacion" && categoria === "hidratacion") rutina.push(p);
-
     if (problema === "poros" && (nombre.includes("serum") || categoria === "tratamiento")) rutina.push(p);
-
     if (problema === "acne" && categoria === "limpieza") rutina.push(p);
   });
 
@@ -104,7 +101,7 @@ async function cargarProductos() {
   });
 }
 
-// 🔥 RELACIÓN (endpoint)
+// 🔥 RELACIÓN
 async function verCategoria(id) {
   const res = await fetch(`${API_PRODUCTOS}/${id}/categoria`);
   const categoria = await res.json();
@@ -144,7 +141,7 @@ function eliminarProducto(index) {
   mostrarCarrito();
 }
 
-// 🧾 FINALIZAR COMPRA (🔥 LO QUE TE FALTABA)
+// 🧾 FINALIZAR COMPRA (🔥 CONECTADO A API)
 function finalizarCompra() {
 
   if (carrito.length === 0) {
@@ -152,10 +149,31 @@ function finalizarCompra() {
     return;
   }
 
-  alert("Compra realizada con éxito 🛍️");
+  // 🔥 convertir carrito → solo productoId
+  const datos = carrito.map(p => ({
+    productoId: p.id
+  }));
 
-  carrito = [];
-  mostrarCarrito();
+  fetch("https://api-skincare-v2-994118614969.us-central1.run.app/api/compras", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(datos)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Error al guardar compra");
+    return res.text();
+  })
+  .then(data => {
+    alert("Compra guardada en base de datos ✅");
+    carrito = [];
+    mostrarCarrito();
+  })
+  .catch(error => {
+    console.error(error);
+    alert("Error al guardar compra ❌");
+  });
 }
 
 // 🚀 INIT
