@@ -1,8 +1,8 @@
 let carrito = [];
 
 // 🔥 ENDPOINTS (AJUSTA EL PUERTO SI ES NECESARIO)
-const API_PRODUCTOS = "http://localhost:9090/api/productos";
-const API_CATEGORIAS = "http://localhost:9090/api/categorias";
+const API_PRODUCTOS = "https://api-skincare-v2-994118614969.us-central1.run.app/api/productos";
+const API_CATEGORIAS = "https://api-skincare-v2-994118614969.us-central1.run.app/api/categorias";
 // 🔥 IMÁGENES
 function imagenProducto(nombre) {
   const n = nombre.toLowerCase();
