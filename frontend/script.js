@@ -23,11 +23,8 @@ function imagenProducto(nombre) {
   if (n.includes("serum"))
     return "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=400&q=80";
 
-  if (n.includes("serum") || n.includes("ácido") || n.includes("acido"))
-    return "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=400&q=80";
-
   return "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=80";
-} 
+}
 
 // 🔥 GENERAR RUTINA
 async function generarRutina() {
@@ -62,11 +59,6 @@ async function generarRutina() {
 function mostrarRutina(lista) {
   const contenedor = document.getElementById("rutina");
   contenedor.innerHTML = "";
-
-  if (lista.length === 0) {
-    contenedor.innerHTML = "<p>No hay productos para esta selección</p>";
-    return;
-  }
 
   lista.forEach(p => {
     contenedor.innerHTML += `
@@ -141,7 +133,7 @@ function eliminarProducto(index) {
   mostrarCarrito();
 }
 
-// 🧾 FINALIZAR COMPRA (🔥 CONECTADO A API)
+// 🧾 FINALIZAR COMPRA (🔥 ARREGLADO)
 function finalizarCompra() {
 
   if (carrito.length === 0) {
@@ -149,10 +141,11 @@ function finalizarCompra() {
     return;
   }
 
-  // 🔥 convertir carrito → solo productoId
   const datos = carrito.map(p => ({
     productoId: p.id
   }));
+
+  console.log("Enviando datos:", datos); // 👈 DEBUG
 
   fetch("https://api-skincare-v2-994118614969.us-central1.run.app/api/compras", {
     method: "POST",
@@ -162,16 +155,18 @@ function finalizarCompra() {
     body: JSON.stringify(datos)
   })
   .then(res => {
-    if (!res.ok) throw new Error("Error al guardar compra");
+    console.log("Respuesta status:", res.status); // 👈 DEBUG
+    if (!res.ok) throw new Error("Error en backend");
     return res.text();
   })
   .then(data => {
-    alert("Compra guardada en base de datos ✅");
+    console.log("Respuesta backend:", data); // 👈 DEBUG
+    alert("Compra guardada en BD ✅");
     carrito = [];
     mostrarCarrito();
   })
   .catch(error => {
-    console.error(error);
+    console.error("ERROR:", error);
     alert("Error al guardar compra ❌");
   });
 }
