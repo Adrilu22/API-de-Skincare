@@ -1,3 +1,6 @@
+Link video :
+https://drive.google.com/file/d/17lZbRy_J0WlUNxwrAE1WUreC_PmMcUtE/view?usp=sharing
+
 Durante el proceso de despliegue de la aplicación, se presentó un inconveniente en el funcionamiento del botón “Finalizar compra”, el cual no respondía al hacer clic.
 
  Causa del problema:
@@ -19,3 +22,5 @@ Crear un commit con un mensaje descriptivo:
 git commit -m "Descripción del cambio realizado"
 Subir los cambios al repositorio remoto:
 git push origin main
+
+
