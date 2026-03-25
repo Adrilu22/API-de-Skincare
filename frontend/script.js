@@ -3,6 +3,7 @@ let carrito = [];
 // 🔥 ENDPOINTS (AJUSTA EL PUERTO SI ES NECESARIO)
 const API_PRODUCTOS = "https://api-skincare-v2-994118614969.us-central1.run.app/api/productos";
 const API_CATEGORIAS = "https://api-skincare-v2-994118614969.us-central1.run.app/api/categorias";
+
 // 🔥 IMÁGENES
 function imagenProducto(nombre) {
   const n = nombre.toLowerCase();
@@ -25,9 +26,9 @@ function imagenProducto(nombre) {
   if (n.includes("serum") || n.includes("ácido") || n.includes("acido"))
     return "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=400&q=80";
 
-  // 🔥 IMAGEN GENÉRICA BONITA
   return "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=400&q=80";
 } 
+
 // 🔥 GENERAR RUTINA
 async function generarRutina() {
   const tipo = document.getElementById("tipoPiel").value;
@@ -42,12 +43,10 @@ async function generarRutina() {
     const nombre = p.nombre.toLowerCase();
     const categoria = p.categoria?.nombre?.toLowerCase();
 
-    // tipo piel
     if (tipo === "grasa" && nombre.includes("gel")) rutina.push(p);
     if (tipo === "seca" && nombre.includes("crema")) rutina.push(p);
     if (tipo === "mixta" && (nombre.includes("gel") || nombre.includes("crema"))) rutina.push(p);
 
-    // problema
     if (problema === "manchas" && (nombre.includes("vitamina") || categoria === "tratamiento")) rutina.push(p);
 
     if (problema === "hidratacion" && categoria === "hidratacion") rutina.push(p);
@@ -142,6 +141,20 @@ function mostrarCarrito() {
 
 function eliminarProducto(index) {
   carrito.splice(index, 1);
+  mostrarCarrito();
+}
+
+// 🧾 FINALIZAR COMPRA (🔥 LO QUE TE FALTABA)
+function finalizarCompra() {
+
+  if (carrito.length === 0) {
+    alert("El carrito está vacío");
+    return;
+  }
+
+  alert("Compra realizada con éxito 🛍️");
+
+  carrito = [];
   mostrarCarrito();
 }
 
