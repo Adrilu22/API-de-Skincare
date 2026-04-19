@@ -152,7 +152,7 @@ function finalizarCompra() {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(datos)
+    body: JSON.stringify(detalles)
   })
   .then(res => {
     console.log("Respuesta status:", res.status); // 👈 DEBUG
