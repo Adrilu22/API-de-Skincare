@@ -23,26 +23,24 @@ public class CompraController {
     }
 
     // 🔥 GUARDAR COMPRA
-    @PostMapping
-    public String guardarCompra(@RequestBody List<DetalleCompra> detalles) {
+  @PostMapping
+public String guardarCompra(@RequestBody List<java.util.Map<String, Object>> detalles) {
 
-        // 1. Crear compra
-        Compra compra = compraRepo.save(new Compra());
+    // 1. Crear compra
+    Compra compra = compraRepo.save(new Compra());
 
-        // 2. Guardar detalles
-        for (DetalleCompra d : detalles) {
+    // 2. Guardar detalles
+    for (java.util.Map<String, Object> d : detalles) {
 
-            DetalleCompra detalle = new DetalleCompra();
+        Long productoId = Long.valueOf(d.get("productoId").toString());
 
-            // ✅ SOLO lo que existe en tu modelo
-            detalle.setProductoId(d.getProductoId());
+        DetalleCompra detalle = new DetalleCompra();
+        detalle.setProductoId(productoId);
+        detalle.setCompraId(compra.getId());
 
-            // 🔥 asignar compra
-            detalle.setCompraId(compra.getId());
-
-            detalleRepo.save(detalle);
-        }
-
-        return "Compra guardada correctamente ✅";
+        detalleRepo.save(detalle);
     }
+
+    return "Compra guardada correctamente ✅";
+}
 }
