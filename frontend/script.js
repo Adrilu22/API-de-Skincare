@@ -13,7 +13,6 @@ function cargarProductos() {
           <div class="producto">
             <h3>${p.nombre}</h3>
             <p>Precio: $${p.precio}</p>
-            
             <button onclick='agregarCarrito(${p.id}, \`${p.nombre}\`, ${p.precio})'>
               Agregar al carrito
             </button>
@@ -24,7 +23,7 @@ function cargarProductos() {
     .catch(err => console.error("Error cargando productos:", err));
 }
 
-// 🔹 Agregar al carrito (CORREGIDO)
+// 🔹 Agregar al carrito
 function agregarCarrito(id, nombre, precio) {
   carrito.push({
     id: id,
@@ -47,7 +46,7 @@ function mostrarCarrito() {
   });
 }
 
-// 🔹 Finalizar compra (CORREGIDO)
+// 🔹 Finalizar compra
 function finalizarCompra() {
 
   if (carrito.length === 0) {
@@ -55,30 +54,24 @@ function finalizarCompra() {
     return;
   }
 
-  // 🔥 convertir a formato backend
   const datos = carrito.map(p => ({
-    productoId: Number(p.id)
+    productoId: parseInt(p.id)  // ✅ parseInt más seguro
   }));
 
-  console.log("Carrito:", carrito);
   console.log("Datos enviados:", datos);
 
   fetch("https://api-skincare-v2-994118614969.us-central1.run.app/api/compras", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos)
   })
   .then(res => {
     console.log("Status:", res.status);
-    if (!res.ok) throw new Error("Error en backend");
-    return res.text();
+    return res.text(); // 👈 temporal para ver el error exacto
   })
   .then(data => {
+    console.log("Respuesta del backend:", data); // 👈 aquí verás qué falla
     alert(data);
-
-    // 🔥 limpiar carrito después de compra
     carrito = [];
     mostrarCarrito();
   })
