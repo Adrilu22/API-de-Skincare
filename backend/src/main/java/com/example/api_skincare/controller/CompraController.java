@@ -23,24 +23,25 @@ public class CompraController {
     }
 
     // 🔥 GUARDAR COMPRA
-  @PostMapping
-public String guardarCompra(@RequestBody List<java.util.Map<String, Object>> detalles) {
+    @PostMapping
+    public String guardarCompra(@RequestBody List<java.util.Map<String, Object>> detalles) {
 
-    // 1. Crear compra
-    Compra compra = compraRepo.save(new Compra());
+        // 1. Crear compra
+        Compra compra = compraRepo.save(new Compra());
 
-    // 2. Guardar detalles
-    for (java.util.Map<String, Object> d : detalles) {
+        // 2. Guardar detalles
+        for (java.util.Map<String, Object> d : detalles) {
 
-        Long productoId = Long.valueOf(d.get("productoId").toString());
+            // ✅ Fix: casting seguro desde Integer o Long
+            Long productoId = ((Number) d.get("productoId")).longValue();
 
-        DetalleCompra detalle = new DetalleCompra();
-        detalle.setProductoId(productoId);
-        detalle.setCompraId(compra.getId());
+            DetalleCompra detalle = new DetalleCompra();
+            detalle.setProductoId(productoId);
+            detalle.setCompraId(compra.getId());
 
-        detalleRepo.save(detalle);
+            detalleRepo.save(detalle);
+        }
+
+        return "Compra guardada correctamente ✅";
     }
-
-    return "Compra guardada correctamente ✅";
-}
 }
