@@ -17,6 +17,7 @@ public class Producto {
     private String nombre;
 
     private double precio;
+    
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
